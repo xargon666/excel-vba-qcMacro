@@ -7,7 +7,9 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
-' FIELD VARS *********************************************************************************************
+Option Explicit
+' FIELD VARS ================================================================================
+' STRINGS ***********************************************************************************
 Public accession_number As String
 Public title As String
 Public record_retention_category As String
@@ -57,6 +59,6 @@ Public loan_return_date As String
 Public objectid As String
 Public business_unit As String
 Public archive_custodain_group As String
-' BOOLEANS
+' BOOLEANS ***********************************************************************************
 Public boolRecordRestricted As Boolean
 Public boolAccessRestricted As Boolean

@@ -61,7 +61,7 @@ Public col_archive_custodian_group As Long
 Public ws As Worksheet
 
 Public Sub findHeaders(gridType As String)
-    Select Case True
+Select Case True
     Case gridType = arrType(0)
         On Error Resume Next
         col_accession_number = rngToprow.Find("Accession Number", LookIn:=xlValues, LookAt:=xlPart).Column
@@ -178,9 +178,8 @@ Public Sub findHeaders(gridType As String)
         col_submitter_id = rngToprow.Find("Submitter", LookIn:=xlValues, LookAt:=xlPart).Column
         col_has_econtent = rngToprow.Find("has econtent", LookIn:=xlValues, LookAt:=xlPart).Column
         col_total_file_size = rngToprow.Find("total file size", LookIn:=xlValues, LookAt:=xlPart).Column
-    End Select
+End Select
 
-    On Error GoTo 0
-    Exit Sub
+On Error GoTo 0
+Exit Sub
 End Sub
-
