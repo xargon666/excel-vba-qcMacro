@@ -1,12 +1,12 @@
 Attribute VB_Name = "errorHandling"
-'@Folder("QC_Macro")
-Option Explicit
-Public errMsg As String
-Public Sub errHeadersMissing()
+Sub errHeadersMissing()
     errMsg = MsgBox("Macro Failed: Couldn't find any headers!!", vbCritical)
 End Sub
-
-Public Sub errZeroRecordsFound()
+Sub errZeroRecordsFound()
     errMsg = MsgBox("Macro Failed: Couldn't find any records!!", vbCritical)
 End Sub
+Sub errZeroPicklistValues()
+    errMsg = MsgBox("Macro Failed: Couldn't any Picklist Values in the dm_dbo.dictionary extract", vbCritical)
+End Sub
+
 

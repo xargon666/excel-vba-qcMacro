@@ -1,68 +1,67 @@
 Attribute VB_Name = "findHeadersCode"
-'@Folder("QC_Macro")
 Option Compare Text
 Option Explicit
-Dim col_title As Long
-Dim col_author As Long
-Dim col_author_id As Long
-Dim col_identifier As Long
-Dim col_associated_identifier As Long
-Dim col_issue_date As Long
-Dim col_department As Long
-Dim col_compound_number As Long
-Dim col_protocol_number As Long
-Dim col_keywords As Long
-Dim col_originating_organization As Long
-Dim col_source_database As Long
-Dim col_language As Long
-Dim col_archive_status As Long
-Dim col_alliance_name As Long
-Dim col_application_name As Long
-Dim col_lnb_author_site As Long
-Dim col_lnb_issue_date As Long
-Dim col_information_sensitivity As Long
-Dim col_personally_identifiable_information As Long
-Dim col_primary_or_copy As Long
-Dim col_archive_notes As Long
-Dim col_storage_site As Long
-Dim col_microfilm_location As Long
-Dim col_description As Long
-Dim col_aadf_tracking_number As Long
-Dim col_accession_number As Long
-Dim col_archive_location As Long
-Dim col_bar_code As Long
-Dim col_borrower_id As Long
-Dim col_borrower_name As Long
-Dim col_container_number As Long
-Dim col_create_date As Long
-Dim col_creator As Long
-Dim col_follow_up_date As Long
-Dim col_information_type As Long
-Dim col_information_type_description As Long
-Dim col_item_details As Long
-Dim col_loan_date As Long
-Dim col_loan_due_date As Long
-Dim col_loan_id As Long
-Dim col_loan_return_date As Long
-Dim col_loan_status As Long
-Dim col_microfilm_number As Long
-Dim col_modified_by As Long
-Dim col_record_retention_category As Long
-Dim col_retention_period_start_date As Long
-Dim col_retention_period_start_date_event As Long
-Dim col_retention_review_date As Long
-Dim col_review_outcome As Long
-Dim col_submitter_id As Long
-Dim col_has_econtent As Long
-Dim col_total_file_size As Long
-Dim col_access_level As Long
-Dim col_objectid As Long
-Dim col_business_unit As Long
-Dim col_archive_custodian_group As Long
-Dim ws As Worksheet
+Public col_title As Long
+Public col_author As Long
+Public col_author_id As Long
+Public col_identifier As Long
+Public col_associated_identifier As Long
+Public col_issue_date As Long
+Public col_department As Long
+Public col_compound_number As Long
+Public col_protocol_number As Long
+Public col_keywords As Long
+Public col_originating_organization As Long
+Public col_source_database As Long
+Public col_language As Long
+Public col_archive_status As Long
+Public col_alliance_name As Long
+Public col_application_name As Long
+Public col_lnb_author_site As Long
+Public col_lnb_issue_date As Long
+Public col_information_sensitivity As Long
+Public col_personally_identifiable_information As Long
+Public col_primary_or_copy As Long
+Public col_archive_notes As Long
+Public col_storage_site As Long
+Public col_microfilm_location As Long
+Public col_description As Long
+Public col_aadf_tracking_number As Long
+Public col_accession_number As Long
+Public col_archive_location As Long
+Public col_bar_code As Long
+Public col_borrower_id As Long
+Public col_borrower_name As Long
+Public col_container_number As Long
+Public col_create_date As Long
+Public col_creator As Long
+Public col_follow_up_date As Long
+Public col_information_type As Long
+Public col_information_type_description As Long
+Public col_item_details As Long
+Public col_loan_date As Long
+Public col_loan_due_date As Long
+Public col_loan_id As Long
+Public col_loan_return_date As Long
+Public col_loan_status As Long
+Public col_microfilm_number As Long
+Public col_modified_by As Long
+Public col_record_retention_category As Long
+Public col_retention_period_start_date As Long
+Public col_retention_period_start_date_event As Long
+Public col_retention_review_date As Long
+Public col_review_outcome As Long
+Public col_submitter_id As Long
+Public col_has_econtent As Long
+Public col_total_file_size As Long
+Public col_access_level As Long
+Public col_objectid As Long
+Public col_business_unit As Long
+Public col_archive_custodian_group As Long
+Public ws As Worksheet
 
-Sub findHeaders(gridType As String)
-    Select Case True
+Public Sub findHeaders(gridType As String)
+Select Case True
     Case gridType = arrType(0)
         On Error Resume Next
         col_accession_number = rngToprow.Find("Accession Number", LookIn:=xlValues, LookAt:=xlPart).Column
@@ -179,9 +178,8 @@ Sub findHeaders(gridType As String)
         col_submitter_id = rngToprow.Find("Submitter", LookIn:=xlValues, LookAt:=xlPart).Column
         col_has_econtent = rngToprow.Find("has econtent", LookIn:=xlValues, LookAt:=xlPart).Column
         col_total_file_size = rngToprow.Find("total file size", LookIn:=xlValues, LookAt:=xlPart).Column
-    End Select
+End Select
 
-    On Error GoTo 0
-    Exit Sub
+On Error GoTo 0
+Exit Sub
 End Sub
-
