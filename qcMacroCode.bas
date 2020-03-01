@@ -4,7 +4,7 @@ Option Compare Text
 Sub qcMacro()
 Dim ws As Worksheet, wb As Workbook
 Dim r As New clsRecord, e As New clsError, pv As New clsPicklistValues
-Dim dictRecord As New Dictionary, dictError As New Dictionary, dictPicklistValues As New Dictionary
+
 Dim strDirectory As String, strSourceDataFile As String, gridType As String, errMsg As String
 Dim lastRow As Long, rowCounter As Long
 Dim wbSource As Workbook
@@ -19,31 +19,131 @@ With ws
     lastRow = .Cells(.Rows.Count, rngToprow.Column).End(xlUp).Row
 End With
 If lastRow < rngToprow.Row + 1 Then Call errZeroRecordsFound
+' ==============================================================================================
+' DICTIONARY SETUP =============================================================================
+Dim dictRecord As New Dictionary, dictError As New Dictionary, dictPicklistValues As New Dictionary
+Dim dict_alliance_names As New Dictionary, dict_application_name As New Dictionary, dict_archive_custodian_group As New Dictionary
+Dim dict_archive_status As New Dictionary, dict_business_unit As New Dictionary, dict_followup_status As New Dictionary
+Dim dict_information_sensitivity As New Dictionary, dict_lnb_author_site As New Dictionary, dict_organization As New Dictionary
+Dim dict_personal_identify_inf As New Dictionary, dict_pier_content_type As New Dictionary, dict_pier_department As New Dictionary
+Dim dict_pier_languages As New Dictionary, dict_pier_review_site As New Dictionary, dict_pier_urgency As New Dictionary
+Dim dict_piera_archive_site As New Dictionary, dict_piera_item_type As New Dictionary, dict_piera_microfilm_location As New Dictionary
+Dim dict_primary_or_copy As New Dictionary, dict_reason_for_rejection As New Dictionary, dict_retention_review_outcome As New Dictionary
+Dim dict_retention_start_date_event As New Dictionary
+Dim dict_source_database As New Dictionary
 Set dictRecord = New Dictionary
 Set dictError = New Dictionary
 Set dictPicklistValues = New Dictionary
+Set dict_alliance_names = New Dictionary
+Set dict_application_name = New Dictionary
+Set dict_archive_custodian_group = New Dictionary
+Set dict_archive_status = New Dictionary
+Set dict_business_unit = New Dictionary
+Set dict_followup_status = New Dictionary
+Set dict_information_sensitivity = New Dictionary
+Set dict_lnb_author_site = New Dictionary
+Set dict_organization = New Dictionary
+Set dict_personal_identify_inf = New Dictionary
+Set dict_pier_content_type = New Dictionary
+Set dict_pier_department = New Dictionary
+Set dict_pier_languages = New Dictionary
+Set dict_pier_review_site = New Dictionary
+Set dict_pier_urgency = New Dictionary
+Set dict_piera_archive_site = New Dictionary
+Set dict_piera_item_type = New Dictionary
+Set dict_piera_microfilm_location = New Dictionary
+Set dict_primary_or_copy = New Dictionary
+Set dict_reason_for_rejection = New Dictionary
+Set dict_retention_category = New Dictionary
+Set dict_retention_review_outcome = New Dictionary
+Set dict_retention_start_date_event = New Dictionary
+Set dict_source_database = New Dictionary
 dictRecord.CompareMode = vbTextCompare
 dictError.CompareMode = vbTextCompare
 dictPicklistValues.CompareMode = vbTextCompare
+dict_alliance_names.CompareMode = vbTextCompare
+dict_application_name.CompareMode = vbTextCompare
+dict_archive_custodian_group.CompareMode = vbTextCompare
+dict_archive_status.CompareMode = vbTextCompare
+dict_business_unit.CompareMode = vbTextCompare
+dict_followup_status.CompareMode = vbTextCompare
+dict_information_sensitivity.CompareMode = vbTextCompare
+dict_lnb_author_site.CompareMode = vbTextCompare
+dict_organization.CompareMode = vbTextCompare
+dict_personal_identify_inf.CompareMode = vbTextCompare
+dict_pier_content_type.CompareMode = vbTextCompare
+dict_pier_department.CompareMode = vbTextCompare
+dict_pier_languages.CompareMode = vbTextCompare
+dict_pier_review_site.CompareMode = vbTextCompare
+dict_pier_urgency.CompareMode = vbTextCompare
+dict_piera_archive_site.CompareMode = vbTextCompare
+dict_piera_item_type.CompareMode = vbTextCompare
+dict_piera_microfilm_location.CompareMode = vbTextCompare
+dict_primary_or_copy.CompareMode = vbTextCompare
+dict_reason_for_rejection.CompareMode = vbTextCompare
+dict_retention_category.CompareMode = vbTextCompare
+dict_retention_review_outcome.CompareMode = vbTextCompare
+dict_retention_start_date_event.CompareMode = vbTextCompare
+dict_source_database.CompareMode = vbTextCompare
+
 ' ====================================================================================================
 ' ADD PICKLIST VALUES TO MEMORY ======================================================================
 strDirectory = "D:\Documents\gitProjects\excel-vba-qcMacro\" ' UPDATE THIS PATH TO LOCAL WORK DIR
 strSourceDataFile = "dm_dbo.dictionary.xls"
+Dim arrSource(0) As Variant
 Set wbSource = Workbooks(strDirectory & strSourceDataFile)
 wbSource.Open
-With wbSource
-    lastRow = .Cells(.Rows.Count, rngToprow.Column).End(xlUp).Row
+With wbSource.ActiveSheet
+    lastRow = .Cells(.Rows.Count, .CurrentRegion.Column).End(xlUp).Row ' could possibly go wrong
     If lastRow < 2 Then Call errZeroPicklistValues
     arrHeader(0) = .Range("1:1").Find("pier_property_name", LookIn:=xlValues, LookAt:=xlWhole).Column
     arrHeader(1) = .Range("1:1").Find("pier_property_value", LookIn:=xlValues, LookAt:=xlWhole).Column
     arrHeader(2) = .Range("1:1").Find("pier_value_is_active", LookIn:=xlValues, LookAt:=xlWhole).Column
     arrHeader(3) = .Range("1:1").Find("source", LookIn:=xlValues, LookAt:=xlWhole).Column
     For rowCounter = 2 To lastRow
-        Set pv = New clsPicklistValues
-        pv.pier_property_name = .Cells(rowCounter, arrHeader(0))
-        pv.pier_property_value = .Cells(rowCounter, arrHeader(1))
-        pv.pier_value_is_active = .Cells(rowCounter, arrHeader(2))
-        pv.source = .Cells(rowCounter, arrHeader(3))
+            Dim target As Range
+            Set target = .Cells(rowCounter, arrHeader(0))
+            If target.Value <> arrSource(i) Then
+                i = i + 1
+                ReDim Preserve arrSource(i) As Variant
+                arrSource(i) = target.Value
+            End If
+    Next rowCounter
+
+    For rowCounter = 2 To lastRow
+        For i = LBound(arrSource) To UBound(arrSource)
+            If .Cells(rowCounter, arrHeader(0)).Value = arrSource(i) Then
+                Set pv = New clsPicklistValues
+                pv.pier_property_name = .Cells(rowCounter, arrHeader(0))
+                pv.pier_property_value = .Cells(rowCounter, arrHeader(1))
+                pv.pier_value_is_active = .Cells(rowCounter, arrHeader(2))
+                pv.source = .Cells(rowCounter, arrHeader(3))
+                If arrSource(i) = "alliance_names" Then dict_alliance_names.Add dict_alliance_names.Count, pv
+                If arrSource(i) = "application_name" Then dict_application_name.Add dict_application_name.Count, pv
+                If arrSource(i) = "archive_custodian_group" Then dict_archive_custodian_group.Add dict_archive_custodian_group.Count, pv
+                If arrSource(i) = "archive_status" Then dict_archive_status.Add dict_archive_status.Count, pv
+                If arrSource(i) = "business_unit" Then dict_business_unit.Add dict_business_unit.Count, pv
+                If arrSource(i) = "followup_status" Then dict_followup_status.Add dict_followup_status.Count, pv
+                If arrSource(i) = "information_sensitivity" Then dict_information_sensitivity.Add dict_information_sensitivity.Count, pv
+                If arrSource(i) = "lnb_author_site" Then dict_lnb_author_site.Add dict_lnb_author_site.Count, pv
+                If arrSource(i) = "organization" Then dict_organization.Add dict_organization.Count, pv
+                If arrSource(i) = "personal_identify_inf" Then dict_personal_identify_inf.Add dict_personal_identify_inf.Count, pv
+                If arrSource(i) = "pier_content_type" Then dict_pier_content_type.Add dict_pier_content_type.Count, pv
+                If arrSource(i) = "pier_department" Then dict_pier_department.Add dict_pier_department.Count, pv
+                If arrSource(i) = "pier_languages" Then dict_pier_languages.Add dict_pier_languages.Count, pv
+                If arrSource(i) = "pier_review_site" Then dict_pier_review_site.Add dict_pier_review_site.Count, pv
+                If arrSource(i) = "pier_urgency" Then dict_pier_urgency.Add dict_pier_urgency.Count, pv
+                If arrSource(i) = "piera_archive_site" Then dict_piera_archive_site.Add dict_piera_archive_site.Count, pv
+                If arrSource(i) = "piera_item_type" Then dict_piera_item_type.Add dict_piera_item_type.Count, pv
+                If arrSource(i) = "piera_microfilm_location" Then dict_piera_microfilm_location.Add dict_piera_microfilm_location.Count, pv
+                If arrSource(i) = "primary_or_copy" Then dict_primary_or_copy.Add dict_primary_or_copy.Count, pv
+                If arrSource(i) = "reason_for_rejection" Then dict_reason_for_rejection.Add dict_reason_for_rejection.Count, pv
+                If arrSource(i) = "retention_category" Then dict_retention_category.Add dict_retention_category.Count, pv
+                If arrSource(i) = "retention_review_outcome" Then dict_retention_review_outcome.Add dict_retention_review_outcome.Count, pv
+                If arrSource(i) = "retention_start_date_event" Then dict_retention_start_date_event.Add dict_retention_start_date_event.Count, pv
+                If arrSource(i) = "source_database" Then dict_source_database.Add dict_source_database.Count, pv
+            End If
+        Next i
 '        if dictPickListValues.Exists(pv.pier_property_name)
 '        dictPicklistValues.Add Key:=pv, item
     Next rowCounter
