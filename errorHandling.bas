@@ -1,4 +1,5 @@
 Attribute VB_Name = "errorHandling"
+'@Folder("VBAProject")
 Sub errHeadersMissing()
     errMsg = MsgBox("Macro Failed: Couldn't find any headers!!", vbCritical)
 End Sub

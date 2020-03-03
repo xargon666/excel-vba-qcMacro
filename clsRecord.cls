@@ -7,6 +7,7 @@ Attribute VB_GlobalNameSpace = False
 Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = False
 Attribute VB_Exposed = False
+'@Folder("VBAProject")
 ' FIELD VARS *********************************************************************************************
 Public accession_number As String
 Public title As String

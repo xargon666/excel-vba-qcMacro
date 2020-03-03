@@ -1,4 +1,5 @@
 Attribute VB_Name = "findHeadersCode"
+'@Folder("VBAProject")
 Option Compare Text
 Option Explicit
 Public col_title As Long

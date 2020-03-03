@@ -1,4 +1,5 @@
 Attribute VB_Name = "gridTypeDetectionFunction"
+'@Folder("VBAProject")
 Option Compare Text
 Public rngToprow As Range
 Public arrType(5) As String

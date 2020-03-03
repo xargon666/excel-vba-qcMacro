@@ -1,4 +1,5 @@
 Attribute VB_Name = "qcMacroCode"
+'@Folder("VBAProject")
 Option Explicit
 Option Compare Text
 Sub qcMacro()
@@ -6,7 +7,7 @@ Dim ws As Worksheet, wb As Workbook
 Dim r As New clsRecord, e As New clsError, pv As New clsPicklistValues
 
 Dim strDirectory As String, strSourceDataFile As String, gridType As String, errMsg As String
-Dim lastRow As Long, rowCounter As Long
+Dim lastRow As Long, rowCounter As Long, i As Long
 Dim wbSource As Workbook
 Dim rngToprow_pv As Range
 Dim arrHeader(3) As Variant
@@ -144,8 +145,6 @@ With wbSource.ActiveSheet
                 If arrSource(i) = "source_database" Then dict_source_database.Add dict_source_database.Count, pv
             End If
         Next i
-'        if dictPickListValues.Exists(pv.pier_property_name)
-'        dictPicklistValues.Add Key:=pv, item
     Next rowCounter
     Erase arrHeader
 End With
@@ -209,14 +208,21 @@ If dictRecord.Count < 1 Then Call errZeroRecordsFound
 ' ====================================================================================================
 ' LOOP THROUGH COLLECTION ============================================================================
 Dim recordNumber As Long
-For recordNumber = 1 To dictRecord.Count
+For recordNumber = 1 To dictRecord.Count ' <= MAIN RECORD FOR LOOP
     With dictRecord.Item(recordNumber)
-        ' ACCESS LEVEL
+        ' ACCESS LEVEL - VALUES *NOT* STORED IN dbo.dm_dictionary
         Select Case True
-        Case .access_level = "Files Restricted"
+        Case .access_level = "General Access"
+            .boolAccessRestricted = False
+        Case .access_level <> "General Access"
             .boolAccessRestricted = True
-            
         End Select
+        ' AUTHOR
+        Select Case True
+            Case (InStr(Trim(.author), " ") > 0) & (InStr(Trim(.author), ",") = 0) ' AUTHOR CONTAINS SPACE BUT NO COMMA
+            
+            Case Trim(.author) = "unknwon" Or Trim(.author) = "unknow" Or Trim(.author) = "unkown" ' UNKNOWN MISPELLED
+            
     End With
 Next recordNumber
 ' ====================================================================================================
